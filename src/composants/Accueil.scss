@@ -1,0 +1,24 @@
+.Accueil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 4rem;
+
+    .titre__signet {
+        text-align: center;
+        color: #ffd500;
+        font-size: 2rem;
+    }
+
+    .connexion {
+        display: flex;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+
+        button {
+            border: #fff;
+            background-color: #fff;
+            padding-right: 0.5rem;
+            cursor: pointer;
+        }
+    }
+}
