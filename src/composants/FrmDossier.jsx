@@ -19,9 +19,12 @@ export default function FrmDossier({ouvert, setOuvert, actionDossier, id_p=null,
   
 
   function gererFermer() {
-    // setTitre(titre_p);
-    // setCouverture(couverture_p);
-    // setCouleur(couleur_p);
+    if (!id_p) {
+      setTitre(titre_p);
+      setCouverture(couverture_p);
+      setCouleur(couleur_p);
+    }
+    
     
     setOuvert(false);
   };

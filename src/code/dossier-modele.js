@@ -3,9 +3,9 @@ import { bd, collDossiers, collUtilisateurs } from "./init";
 
 // ajouter un dossier
 export async function creer(idUtil, infoDossier) {
-    const idDossier = doc(collection(bd, collUtilisateurs, idUtil, collDossiers));
-    await setDoc(idDossier, infoDossier);
-    return idDossier;
+    const refDossier = doc(collection(bd, collUtilisateurs, idUtil, collDossiers));
+    await setDoc(refDossier, infoDossier);
+    return refDossier.id;
 }
 
 // lire les dossiers
