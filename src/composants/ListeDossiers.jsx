@@ -1,9 +1,12 @@
 import './ListeDossiers.scss';
 import Dossier from './Dossier';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { lireTout, modifier, supprimer } from '../code/dossier-modele';
+import { UtilisateurContext } from './Appli';
 
-export default function ListeDossiers({dossiers, setDossiers, utilisateur}) {
+export default function ListeDossiers({dossiers, setDossiers}) {
+
+  const utilisateur = useContext(UtilisateurContext);
 
   useEffect(()=> {
     async function chercherDossiers() {

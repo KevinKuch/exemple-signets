@@ -1,9 +1,12 @@
 import { deconnexion } from '../code/utilisateur-modele';
 import './Entete.scss';
 import Avatar from '@mui/material/Avatar';
+import { UtilisateurContext } from './Appli';
+import { useContext } from 'react';
 
-export default function Entete({utilisateur}) {
+export default function Entete() {
 
+  const utilisateur = useContext(UtilisateurContext);
 
   return (
     <header className="Entete">
