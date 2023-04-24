@@ -13,7 +13,26 @@
   color: #fff;
   cursor: grab;
   overflow: hidden;
+  
+  &.zd {
+    box-shadow: 0 0 8px 5px rgba($color: #0f9608, $alpha: 0.4);
 
+    &::after {
+      position: absolute;
+      content: '\2B8B';
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba($color: #333, $alpha: 0.4);
+      pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 3rem;
+    }
+  }
+  
   &.actif .carte {
     transform: rotateY(180deg);
   }
@@ -23,7 +42,7 @@
     transform-style: preserve-3d;
     transition: transform 0.5s;
     height: 100%;
-
+    
     .endroit,
     .envers {
       height: 100%;
@@ -31,6 +50,8 @@
       top: 0;
       left: 0;
       backface-visibility: hidden;
+      transform: rotate(0); // Nécessaire pour contrer 'bogue' Firefox avec backface-visibility
+      // Voir : https://bugzilla.mozilla.org/show_bug.cgi?id=1201471
     }
 
     .endroit {
@@ -104,4 +125,5 @@
     bottom: 0.6rem;
     right: 0.6rem;
   }
+
 }

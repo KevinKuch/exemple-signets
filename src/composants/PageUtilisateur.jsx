@@ -9,7 +9,7 @@ import { creer } from '../code/dossier-modele';
 import { UtilisateurContext } from './Appli';
 
 export default function PageUtilisateur() {
-  // Récupérer l'utilisateur conntecté du contexte...
+  // Récupérer l'utilisateur connecté du contexte ...
   const utilisateur = useContext(UtilisateurContext);
 
   const [frmDossierOuvert, setFrmDossierOuvert] = useState(false);
@@ -33,7 +33,11 @@ export default function PageUtilisateur() {
   }
 
   return (
-    <div className="PageUtilisateur">
+    <div 
+      className="PageUtilisateur" 
+      onDrop={(evt)=>evt.preventDefault()}
+      onDragOver={(evt)=>evt.preventDefault()}
+    >
         <Entete />
         <section className="contenu-principal">
           <ListeDossiers dossiers={dossiers} setDossiers={setDossiers} />

@@ -5,23 +5,92 @@ import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
 import EditIcon from '@mui/icons-material/Edit';
 import ClearIcon from '@mui/icons-material/Clear';
 import FrmDossier from './FrmDossier';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { creer } from '../code/signet-modele';
+import { UtilisateurContext } from './Appli';
 
-export default function Dossier({ id, titre, couverture, couleur, dateModif, supprimerDossier, modifierDossier }) {
+export default function Dossier({ id, titre, couverture, couleur, dateModif, top3, supprimerDossier, modifierDossier }) {
+  // On accède à l'objet utilisateur propagé dans le contexte React UtilisateurContext
+  const uid = useContext(UtilisateurContext).uid;
+
+  // État des signets dans ce dossier
+  const [signets, setSignets] = useState(top3 || []);
+  
   // État d'ouverture du formulaire
   const [frmDossierOuvert, setFrmDossierOuvert] = useState(false);
 
   // État de la face visible
-  const [carteActive, setCarteActive] = useState(false);
+  const [contenuDossierVisible, setContenuDossierVisible] = useState(false);
+
+  // Gérer les événements Glisser/Déposer
+
+  // État zone de dépôt du dossier
+  const [zd, setZd] = useState(false);
+
+  function gererDragEnter(evt) {
+    evt.dataTransfer.effectAllowed = 'link';
+    evt.preventDefault();
+    setZd(true);
+    console.log('Entre...');
+  }
+
+  function gererDragOver(evt) {
+    evt.preventDefault();
+  }
+  function gererDragLeave(evt) {
+    // evt.preventDefault();
+    // console.log('Target : ', evt.target);
+    // console.log('Current Target : ', evt.currentTarget);
+    // console.log('Related Target : ', evt.relatedTarget);
+    if(evt.currentTarget.contains(evt.relatedTarget)) {
+      return;
+    }
+
+    setZd(false);
+    console.log('Quitte...');
+  }
+
+  async function gererDrop(evt) {
+    const url = evt.dataTransfer.getData('URL');
+    evt.preventDefault();
+    console.log('Donnée déposée : ', url);
+    setZd(false);
+    setContenuDossierVisible(true);
+
+    // Chercher le titre associé à l'URL
+    // Ce code est problématique à cause de CORS (détail au prochain cours)
+    // const reponseUrl = await fetch(url);
+    // const reponseTexte = await reponseUrl.text();
+    // console.log(reponseTexte);
+
+    ajouterSignet(id, url);
+  }
+
+  async function ajouterSignet(idDossier, urlSignet) {
+    const derniers3 = [...signets, {url: urlSignet, titre: 'temp'}].slice(-3);
+    await creer(uid, idDossier, derniers3);
+    setSignets(derniers3);
+  }
 
   return (
     // Remarquez l'objet JS donné à la valeur de l'attribut style en JSX, voir : 
     // https://reactjs.org/docs/dom-elements.html#style
-    <article className={"Dossier" + (carteActive ? ' actif' : '')} style={{ backgroundColor: couleur }}>
+    <article 
+      className={
+        "Dossier" 
+        + (contenuDossierVisible ? ' actif' : '')
+        + (zd ? ' zd' : '')
+      } 
+      style={{ backgroundColor: couleur }}
+      onDragEnter={gererDragEnter}
+      onDrop={gererDrop}
+      onDragOver={gererDragOver}
+      onDragLeave={gererDragLeave}
+    >
       <div className="carte">
         <div className="endroit">
           <div className="couverture">
-            <IconButton onClick={()=>setCarteActive(true)} className="tourner" aria-label="Tourner" disableRipple={true} size="small">
+            <IconButton onClick={()=>setContenuDossierVisible(true)} className="tourner" aria-label="Tourner" disableRipple={true} size="small">
               <ThreeSixtyIcon />
             </IconButton>
             <img
@@ -52,15 +121,14 @@ export default function Dossier({ id, titre, couverture, couleur, dateModif, sup
           </div>
         </div>
         <div className="envers">
-          <IconButton className="tourner" aria-label="Tourner" disableRipple={true} size="small">
+          <IconButton onClick={()=>setContenuDossierVisible(false)} className="tourner" aria-label="Tourner" disableRipple={true} size="small">
             <ThreeSixtyIcon />
           </IconButton>
-          <a href="https://fr.wikipedia.org/wiki/Bataille_d%27Actium" target='_blank'>
-            Bataille d'Actium
-          </a>
-          <a href="https://fr.wikipedia.org/wiki/Cl%C3%A9op%C3%A2tre_VII" target='_blank'>
-            Cléopâtre VII
-          </a>
+          {
+            signets.map(
+              (signet, position) => <a key={position} href={signet.url} target='_blank'>{signet.titre}</a>
+            )
+          }
         </div>
       </div>
     </article>

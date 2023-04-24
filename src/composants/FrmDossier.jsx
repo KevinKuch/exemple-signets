@@ -13,31 +13,23 @@ export default function FrmDossier({ouvert, setOuvert, actionDossier, id_p=null,
 	const [couverture, setCouverture] = useState(couverture_p);
 	const [couleur, setCouleur] = useState(couleur_p);
 
-	console.log("Le titre : ", titre);
-  console.log("La couverture : ", couverture);
-  console.log("La couleur : ", couleur);
-  
-
   function gererFermer() {
-    if (!id_p) {
+    if(!id_p) {
       setTitre(titre_p);
       setCouverture(couverture_p);
       setCouleur(couleur_p);
     }
-    
-    
     setOuvert(false);
   };
 
   function gererActionDossier() {
     let dateModif = new Date().getTime();
-    if (id_p !== null) {
+    if(id_p) {
       actionDossier(id_p, titre, couverture, couleur, dateModif);
     }
     else {
       actionDossier(titre, couverture, couleur, dateModif);
     }
-    
     // Fermer la boîte de dialogue
     gererFermer();
   }
@@ -72,7 +64,7 @@ export default function FrmDossier({ouvert, setOuvert, actionDossier, id_p=null,
 						triangle='hide'
 						width='auto'
 						color={couleur}
-						colors={['#0f0', '#00f', '#036', '#960', '#f00', '#f0f', '#000', '#ee38f5']}
+						colors={['#0f0', '#00f', '#036', '#960']}
 						onChangeComplete={clr=>setCouleur(clr.hex)}
             value={couleur}
 					/>
