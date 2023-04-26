@@ -62,8 +62,14 @@ export default function Dossier({ id, titre, couverture, couleur, dateModif, top
     // const reponseUrl = await fetch(url);
     // const reponseTexte = await reponseUrl.text();
     // console.log(reponseTexte);
-
-    ajouterSignet(id, url);
+    const reponseUrl = await fetch('https://cors-anywhere.herokuapp.com/' + url);
+    const reponseTexte = await reponseUrl.text();
+    // console.log(reponseTexte);
+    // On instancie un parseur DOM en JS et on lui donne la réponse en input 
+    const doc = new DOMParser().parseFromString(reponseTexte, 'text/html');
+    const titre = doc.querySelector('head title')[0].innerText;
+    console.log('Titre du coument: ' + titre);
+    ajouterSignet(id, url, titre);
   }
 
   async function ajouterSignet(idDossier, urlSignet) {
