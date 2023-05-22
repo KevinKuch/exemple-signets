@@ -44,6 +44,7 @@ export default function PageUtilisateur() {
           
           <FrmDossier ouvert={frmDossierOuvert} setOuvert={setFrmDossierOuvert} actionDossier={ajouterDossier}/>
           
+          
           <Fab onClick={ouvrirFrmDossier} size="large" className="ajoutDossier" color="secondary" aria-label="Ajouter dossier">
             <AddIcon />
           </Fab>
